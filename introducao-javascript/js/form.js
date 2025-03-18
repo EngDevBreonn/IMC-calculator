@@ -1,21 +1,27 @@
 var botaoAdicionar = document.querySelector("#adicionar-paciente");
- 
+
 botaoAdicionar.addEventListener("click", function (event) {
     event.preventDefault();
- 
+
     var form = document.querySelector("#form-adiciona");
- 
+
     var paciente = obtemPacienteDoFormulario(form);
- 
+
+    if (!paciente.altura || !paciente.gordura || !paciente.nome || !paciente.peso) {
+        var erro = document.querySelector("#msg-erro");
+        erro.textContent = "Preencha todos os dados";
+        return;
+    }
+
     var pacienteTr = montaTr(paciente);
- 
+
     var tabela = document.querySelector("#tabela-pacientes");
- 
+
     tabela.appendChild(pacienteTr);
- 
+
     form.reset();
 })
- 
+
 function obtemPacienteDoFormulario(form) {
     var paciente = {
         nome: form.nome.value,
@@ -26,23 +32,23 @@ function obtemPacienteDoFormulario(form) {
     }
     return paciente;
 }
- 
+
 function montaTd(dado) {
     var td = document.createElement("td");
     td.textContent = dado;
- 
+
     return td;
 }
- 
+
 function montaTr(paciente) {
     var pacienteTr = document.createElement("tr");
- 
+
     pacienteTr.appendChild(montaTd(paciente.nome));
     pacienteTr.appendChild(montaTd(paciente.peso));
     pacienteTr.appendChild(montaTd(paciente.altura));
     pacienteTr.appendChild(montaTd(paciente.gordura));
     pacienteTr.appendChild(montaTd(paciente.imc));
- 
+
     return pacienteTr;
 }
 
