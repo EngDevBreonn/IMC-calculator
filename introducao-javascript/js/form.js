@@ -7,11 +7,12 @@ botaoAdicionar.addEventListener("click", function (event) {
 
     var paciente = obtemPacienteDoFormulario(form);
 
-    if (!paciente.altura || !paciente.gordura || !paciente.nome || !paciente.peso) {
-        var erro = document.querySelector("#msg-erro");
-        erro.textContent = "Preencha todos os dados";
+    var erros = validaPaciente(paciente);
+    if(erros.length > 0){
+        exibeMensagensErro(erros);
         return;
     }
+        
 
     var pacienteTr = montaTr(paciente);
 
@@ -52,3 +53,40 @@ function montaTr(paciente) {
     return pacienteTr;
 }
 
+function validaPaciente(paciente) {
+    var erros = [];
+
+    if (paciente.nome.length == 0) {
+        erros.push("Nome é obrigatório");
+    }
+    if (paciente.altura.length == 0) {
+        erros.push("Altura é obrigatório");
+    }
+    if (paciente.peso.length == 0) {
+        erros.push("Peso é obrigatório");
+    }
+    if (paciente.gordura.length == 0) {
+        erros.push("Gordura é obrigatório");
+    }
+    if (!validaPeso(paciente.peso)) {
+        erros.push("Peso é inválido");
+    }
+    if (!validaAltura(paciente.altura)) {
+        erros.push("Altura é inválida");
+    }
+
+    return erros;
+}
+
+
+function exibeMensagensErro(erros){
+    var ul = document.querySelector("#msg-erro");
+    ul.innerHTML = "";
+
+    erros.forEach(erro => {
+        var li = document.createElement("li");
+        li.textContent = erro;
+        ul.appendChild(li);
+    })
+
+}
